@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { GoogleMap, LoadScript, CircleF } from "@react-google-maps/api";
 import { StandaloneSearchBox, MarkerF } from "@react-google-maps/api";
 import "./Home.css";
-import { useNavigate, useLocation } from "react-router-dom";
-// import {AdvancedMarker} from '@vis.gl/react-google-maps';
+import { useNavigate } from "react-router-dom";
 
 const mapContainerStyle = {
   width: "100%",
@@ -11,21 +10,21 @@ const mapContainerStyle = {
 };
 
 const usCenter = {
-  lat: 39.8283, // Latitude for the center of the US
-  lng: -98.5795, // Longitude for the center of the US
+  lat: 39.8283,
+  lng: -98.5795,
 };
 
 const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-const MILES_TO_METERS = 1609.34; // Conversion factor from miles to meters
+const MILES_TO_METERS = 1609.34;
 
 function Home() {
-  const [coordinates, setCoordinates] = useState(usCenter); // Store selected coordinates
-  const [zoom, setZoom] = useState(4); // Set initial zoom
-  const [searchedAddress, setSearchedAddress] = useState(""); // State for the searched address
-  const searchBoxRef = useRef(null); // Reference to the search box
+  const [coordinates, setCoordinates] = useState(usCenter);
+  const [zoom, setZoom] = useState(4);
+  const [searchedAddress, setSearchedAddress] = useState("");
+  const searchBoxRef = useRef(null);
   const [radius, setRadius] = useState(5);
   const navigate = useNavigate();
   const [mapKey, setMapKey] = useState(1);
@@ -40,22 +39,19 @@ function Home() {
       return;
     }
 
-    // Set map coordinates to the selected place
     const location = place.geometry.location;
-    setCoordinates({ lat: location.lat(), lng: location.lng() }); // Update coordinates to the selected place
+    setCoordinates({ lat: location.lat(), lng: location.lng() });
 
     const zoomMap = { 5: 11, 10: 10, 15: 9, 20: 9, 25: 9, 30: 9 };
+    setZoom(zoomMap[radius]);
 
-    setZoom(zoomMap[radius]); // Zoom in to the place
-
-    // Store the address in state
-    setSearchedAddress(place.formatted_address || ""); // Use formatted_address if available
+    setSearchedAddress(place.formatted_address || "");
   };
 
   const handleRadiusChange = (event) => {
     const zoomMap = { 5: 11, 10: 10, 15: 9, 20: 9, 25: 9, 30: 9 };
-    setZoom(zoomMap[event.target.value]); // Zoom in to the place
-    setRadius(event.target.value); // Update the radius state with the selected value
+    setZoom(zoomMap[event.target.value]);
+    setRadius(event.target.value);
   };
 
   const handleFindHotels = () => {
@@ -70,11 +66,10 @@ function Home() {
 
   return (
     <div>
-      {/* Google Map */}
       <div className="box-map">
         <LoadScript
           googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-          libraries={["places"]} // Load the places library
+          libraries={["places"]}
         >
           <GoogleMap
             key={mapKey}
@@ -83,23 +78,22 @@ function Home() {
             zoom={zoom}
             options={options}
           >
-            {/* Marker at the selected location */}
             {searchedAddress.length > 0 && (
               <>
                 <MarkerF
                   position={coordinates}
                   icon={{
                     path: window.google.maps.SymbolPath.CIRCLE,
-                    fillColor: "rgb(113, 195, 222)", // Change to desired color
+                    fillColor: "rgb(113, 195, 222)",
                     fillOpacity: 1,
-                    scale: 10, // Size of the marker
-                    strokeColor: "#FFF", // Optional: border color
-                    strokeWeight: 2, // Optional: border weight
+                    scale: 10,
+                    strokeColor: "#FFF",
+                    strokeWeight: 2,
                   }}
                 />
                 <CircleF
                   center={coordinates}
-                  radius={radius * MILES_TO_METERS} // Convert radius to meters
+                  radius={radius * MILES_TO_METERS}
                   options={{
                     strokeColor: "#000",
                     strokeOpacity: 0.8,
@@ -111,8 +105,6 @@ function Home() {
               </>
             )}
 
-            {/* This will place a marker at the searched coordinates */}
-            {/* SearchBox - Link it to the input field */}
             <StandaloneSearchBox
               onLoad={(ref) => (searchBoxRef.current = ref)}
               onPlacesChanged={onPlacesChanged}
@@ -135,7 +127,6 @@ function Home() {
           </GoogleMap>
         </LoadScript>
       </div>
-      {/* Display the selected coordinates and searched address */}
       <div className="container-info">
         <div className="find-box">
           <h3>Search above to find an address</h3>
@@ -146,7 +137,6 @@ function Home() {
             </p>
           </div>
 
-          {/* Radius selector */}
           <div className="find-item">
             <h4>Radius</h4>
             <p>

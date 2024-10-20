@@ -1,15 +1,8 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Find.css";
 import React, { useState, useEffect, useRef } from "react";
-import { GoogleMap, LoadScript, CircleF } from "@react-google-maps/api";
-import { StandaloneSearchBox, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { MarkerF } from "@react-google-maps/api";
 
 const mapContainerStyle = {
   width: "100%",
@@ -17,8 +10,8 @@ const mapContainerStyle = {
 };
 
 const usCenter = {
-  lat: 39.8283, // Latitude for the center of the US
-  lng: -98.5795, // Longitude for the center of the US
+  lat: 39.8283,
+  lng: -98.5795,
 };
 
 const options = {
@@ -26,15 +19,13 @@ const options = {
   zoomControl: true,
 };
 
-const MILES_TO_METERS = 1609.34; // Conversion factor from miles to meters
-
 function Find() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [lat, setLat] = useState(null);
-  const [long, setLong] = useState(null);
-  const [radius, setRadius] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [coordinates, setCoordinates] = useState(usCenter);
+  const [zoom, setZoom] = useState(4);
+  const [mapKey, setMapKey] = useState(1);
   const [results, setResults] = useState([
     {
       name: "test",
@@ -62,12 +53,6 @@ function Find() {
     },
   ]);
 
-  const [coordinates, setCoordinates] = useState(usCenter); // Store selected coordinates
-  const [zoom, setZoom] = useState(4); // Set initial zoom
-  const [searchedAddress, setSearchedAddress] = useState(""); // State for the searched address
-  const searchBoxRef = useRef(null); // Reference to the search box
-  const [mapKey, setMapKey] = useState(1);
-
   const setMapDetails = (rad, lat, lng) => {
     const zoomMap = { 5: 11, 10: 10, 15: 9, 20: 9, 25: 9, 30: 9 };
     try {
@@ -86,15 +71,11 @@ function Find() {
   };
 
   useEffect(() => {
-    // Get the query params
     const latitude = searchParams.get("lat");
     const longitude = searchParams.get("lng");
     const rad = searchParams.get("radius");
 
-    // Set state with the values from the URL
-    setLat(latitude);
-    setLong(longitude);
-    setRadius(rad);
+    setMapKey((prevKey) => prevKey + 1);
     setMapDetails(rad, latitude, longitude);
 
     const fetchData = async () => {
@@ -125,10 +106,9 @@ function Find() {
     }
   };
 
-  const [mapLoaded, setMapLoaded] = useState(false); // Track if the map is loaded
-
+  const [mapLoaded, setMapLoaded] = useState(false);
   const handleMapLoad = () => {
-    setMapLoaded(true); // Mark the map as loaded when ready
+    setMapLoaded(true);
   };
 
   return (
@@ -143,7 +123,7 @@ function Find() {
           <div>
             <LoadScript
               googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-              libraries={["places"]} // Load the places library
+              libraries={["places"]}
             >
               <GoogleMap
                 key={mapKey}
@@ -154,8 +134,6 @@ function Find() {
                 className="map-details"
                 onLoad={handleMapLoad}
               >
-                {/* Marker at the selected location */}
-
                 {mapLoaded &&
                   results?.map((e, i) => (
                     <MarkerF
@@ -165,11 +143,11 @@ function Find() {
                       position={{ lat: e.lat, lng: e.lng }}
                       icon={{
                         path: window.google.maps.SymbolPath.CIRCLE,
-                        fillColor: "#fa9152", // Change to desired color
+                        fillColor: "#fa9152",
                         fillOpacity: 1,
-                        scale: 10, // Size of the marker
-                        strokeColor: "#FFF", // Optional: border color
-                        strokeWeight: 2, // Optional: border weight
+                        scale: 10,
+                        strokeColor: "#FFF",
+                        strokeWeight: 2,
                       }}
                     />
                   ))}
@@ -184,11 +162,11 @@ function Find() {
                         position={{ lat: c.lat, lng: c.lng }}
                         icon={{
                           path: window.google.maps.SymbolPath.CIRCLE,
-                          fillColor: "#db4867", // Change to desired color
+                          fillColor: "#db4867",
                           fillOpacity: 1,
-                          scale: 10, // Size of the marker
-                          strokeColor: "#FFF", // Optional: border color
-                          strokeWeight: 2, // Optional: border weight
+                          scale: 10,
+                          strokeColor: "#FFF",
+                          strokeWeight: 2,
                         }}
                       />
                     ))}
@@ -250,11 +228,6 @@ function Find() {
                 </div>
               </div>
             ))}
-
-            {/* <h2>Location Search</h2>
-      <p>Latitude: {lat}</p>
-      <p>Longitude: {long}</p>
-      <p>Radius: {radius} miles</p> */}
           </div>
         </div>
       )}
