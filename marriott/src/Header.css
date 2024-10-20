@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  height: 5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: min(2000px, 100%);
+}
+.logo {
+  cursor: pointer;
+}

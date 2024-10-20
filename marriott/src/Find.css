@@ -1,0 +1,124 @@
+.container-result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.box-result {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: min(100%, 70rem);
+  border-radius: 15px;
+  margin-bottom: 1.2rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container-compare {
+  display: flex;
+  align-items: center;
+}
+
+.box-price {
+  margin: 1rem;
+  background-color: lightblue;
+  padding: 1rem;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 5rem;
+}
+
+.container-result-map {
+  width: min(100%, 70rem);
+
+  padding: 1rem;
+}
+
+.map-details {
+  border-radius: 15px;
+}
+
+.button-find {
+  width: 15rem;
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 15px;
+  color: black;
+  background-color: lightblue;
+}
+
+.button-find:hover {
+  background-color: rgb(113, 195, 222);
+}
+
+.button-find:disabled {
+  background-color: lightgray;
+  cursor: default;
+}
+
+.container-loading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15rem;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 30px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side, #000 90%, #0000);
+  background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
+  background-size: calc(100% / 3) 50%;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+  20% {
+    background-position: 0% 0%, 50% 50%, 100% 50%;
+  }
+  40% {
+    background-position: 0% 100%, 50% 0%, 100% 50%;
+  }
+  60% {
+    background-position: 0% 50%, 50% 100%, 100% 0%;
+  }
+  80% {
+    background-position: 0% 50%, 50% 50%, 100% 100%;
+  }
+}
+
+.hotel-circle {
+  background-color: #fa9152;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.place-circle {
+  background-color: #db4867;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+}
+
+.box-key {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.container-key {
+  display: flex;
+}

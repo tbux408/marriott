@@ -1,0 +1,61 @@
+.search-box {
+  padding: 1.2rem;
+  opacity: 95%;
+  border: none;
+  border-radius: 15px;
+}
+
+.find-box {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: min(100%, 25rem);
+  padding: 1.2rem;
+  margin: 1.2rem;
+  border-radius: 15px;
+}
+
+.container-info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.find-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.find-button {
+  width: 100%;
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 15px;
+  color: black;
+  background-color: lightblue;
+}
+
+.find-button:hover {
+  background-color: rgb(113, 195, 222);
+}
+
+.find-button:disabled {
+  background-color: lightgray;
+  cursor: default;
+}
+
+.find-select {
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.box-map{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
