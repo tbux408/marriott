@@ -18,6 +18,7 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
+const MILES_TO_METERS = 1609.34;
 
 function Find() {
   const navigate = useNavigate();
@@ -56,9 +57,9 @@ function Find() {
       25: 9,
       30: 9,
     };
-    try {
+    if (zoomMap[rad]) {
       setZoom(zoomMap[rad]);
-    } catch {
+    } else {
       setZoom(10);
     }
 
@@ -82,9 +83,12 @@ function Find() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5000/hotels?lat=${latitude}&lng=${longitude}&radius=${rad}`
+          `http://localhost:5000/hotel?lat=${latitude}&long=${longitude}&radius=${
+            rad * MILES_TO_METERS
+          }`
         );
         const result = await response.json();
+        console.log(result);
         setResults(result); // Store the response data in the state
         setLoading(false);
       } catch (error) {
@@ -93,10 +97,10 @@ function Find() {
     };
 
     if (latitude && longitude && rad) {
-      //   fetchData();
-      setTimeout(() => {
-        setLoading(false);
-      }, "1000");
+      fetchData();
+      //   setTimeout(() => {
+      //     setLoading(false);
+      //   }, "1000");
     }
   }, [searchParams]);
 
@@ -141,6 +145,7 @@ function Find() {
                       key={i}
                       onClick={() => handleScroll(i)}
                       id={i}
+                      title={e.name}
                       position={{ lat: e.latitude, lng: e.longitude }}
                       icon={{
                         path: window.google.maps.SymbolPath.CIRCLE,
@@ -161,6 +166,7 @@ function Find() {
                         key={i}
                         id={i}
                         position={{ lat: c.latitude, lng: c.longitude }}
+                        title={c.name}
                         icon={{
                           path: window.google.maps.SymbolPath.CIRCLE,
                           fillColor: "#db4867",
@@ -181,7 +187,7 @@ function Find() {
                   Hotels: <div className="hotel-circle"></div>
                 </div>
                 <div className="box-key">
-                  Places: <div className="place-circle"></div>
+                  Point of Interest (POI): <div className="place-circle"></div>
                 </div>
               </div>
 
@@ -194,7 +200,7 @@ function Find() {
                 <div>
                   <h2>{e.name}</h2>
                   <p>
-                    <b>Points of Interest: </b>
+                    <b>POI: </b>
                     {e.pois
                       .map((e) => {
                         return e.name;
@@ -203,7 +209,7 @@ function Find() {
                   </p>
                   <p>
                     <b>Market Target: </b>
-                    {e.marketTarget}
+                    {/* {e.marketTarget} */}
                   </p>
                   <p>
                     <b>Address: </b>
