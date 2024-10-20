@@ -29,32 +29,33 @@ function Find() {
   const [results, setResults] = useState([
     {
       name: "test",
-      pred: 120,
-      actual: 500,
+      predictedPrice: 120,
+      actualPrice: 500,
       diff: 380,
-      lat: 37.2699733,
-      lng: -80.4539393,
-      places: [
-        { name: "simons house", lat: 37.2999733, lng: -80.4539393 },
-        { name: "test", lat: 37.3699733, lng: -80.4539393 },
-      ],
-    },
-    {
-      name: "test2",
-      pred: 500,
-      actual: 120,
-      diff: -380,
-      lat: 37.2295733,
-      lng: -80.4139393,
-      places: [
-        { name: "simons house", lat: 37.2119733, lng: -80.4539393 },
-        { name: "test", lat: 37.3191733, lng: -80.4539393 },
+      latitude: 37.2699733,
+      longitude: -80.4539393,
+      marketTarget: "luxury",
+      address: "703 Toms Creek",
+      pois: [
+        { name: "simons house", latitude: 37.2999733, longitude: -80.4539393 },
+        { name: "test", latitude: 37.3699733, longitude: -80.4539393 },
       ],
     },
   ]);
 
   const setMapDetails = (rad, lat, lng) => {
-    const zoomMap = { 5: 11, 10: 10, 15: 9, 20: 9, 25: 9, 30: 9 };
+    const zoomMap = {
+      1: 11,
+      2: 11,
+      3: 11,
+      4: 11,
+      5: 11,
+      10: 10,
+      15: 9,
+      20: 9,
+      25: 9,
+      30: 9,
+    };
     try {
       setZoom(zoomMap[rad]);
     } catch {
@@ -81,7 +82,7 @@ function Find() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://your-api-url.com/search?lat=${latitude}&lng=${longitude}&radius=${rad}`
+          `https://localhost:5000/hotels?lat=${latitude}&lng=${longitude}&radius=${rad}`
         );
         const result = await response.json();
         setResults(result); // Store the response data in the state
@@ -140,7 +141,7 @@ function Find() {
                       key={i}
                       onClick={() => handleScroll(i)}
                       id={i}
-                      position={{ lat: e.lat, lng: e.lng }}
+                      position={{ lat: e.latitude, lng: e.longitude }}
                       icon={{
                         path: window.google.maps.SymbolPath.CIRCLE,
                         fillColor: "#fa9152",
@@ -154,12 +155,12 @@ function Find() {
 
                 {mapLoaded &&
                   results
-                    ?.flatMap((e) => e.places)
+                    ?.flatMap((e) => e.pois)
                     .map((c, i) => (
                       <MarkerF
                         key={i}
                         id={i}
-                        position={{ lat: c.lat, lng: c.lng }}
+                        position={{ lat: c.latitude, lng: c.longitude }}
                         icon={{
                           path: window.google.maps.SymbolPath.CIRCLE,
                           fillColor: "#db4867",
@@ -193,37 +194,56 @@ function Find() {
                 <div>
                   <h2>{e.name}</h2>
                   <p>
-                    <b>Places: </b>
-                    {e.places
+                    <b>Points of Interest: </b>
+                    {e.pois
                       .map((e) => {
                         return e.name;
                       })
                       .join(", ")}
                   </p>
+                  <p>
+                    <b>Market Target: </b>
+                    {e.marketTarget}
+                  </p>
+                  <p>
+                    <b>Address: </b>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        e.address
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {e.address}
+                    </a>
+                  </p>
                 </div>
 
                 <div className="container-compare">
+                  <div className="box-price">
+                    <div>Predicted</div>
+                    <b>${e.predictedPrice}</b>
+                  </div>
+                  -
                   <div
                     className="box-price"
                     style={{ backgroundColor: "lightgray" }}
                   >
                     <div>Actual</div>
-                    <b>${e.actual}</b>
-                  </div>
-                  -
-                  <div className="box-price">
-                    <div>Predicted</div>
-                    <b>${e.pred}</b>
+                    <b>${e.actualPrice}</b>
                   </div>
                   =
                   <div
                     className="box-price"
                     style={{
-                      backgroundColor: e.diff < 0 ? "coral" : "lightgreen",
+                      backgroundColor:
+                        e.predictedPrice - e.actualPrice < 0
+                          ? "coral"
+                          : "lightgreen",
                     }}
                   >
                     <div>Difference</div>
-                    <b>${e.diff}</b>
+                    <b>${e.predictedPrice - e.actualPrice}</b>
                   </div>
                 </div>
               </div>

@@ -1,16 +1,9 @@
-import logo from "./logo.svg";
-import "./App.css";
 import Home from "./Home";
-import Header from "./Header";
 import Find from "./Find";
+import Header from "./Header";
+import "./App.css";
 
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (

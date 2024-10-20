@@ -42,14 +42,36 @@ function Home() {
     const location = place.geometry.location;
     setCoordinates({ lat: location.lat(), lng: location.lng() });
 
-    const zoomMap = { 5: 11, 10: 10, 15: 9, 20: 9, 25: 9, 30: 9 };
+    const zoomMap = {
+      1: 11,
+      2: 11,
+      3: 11,
+      4: 11,
+      5: 11,
+      10: 10,
+      15: 9,
+      20: 9,
+      25: 9,
+      30: 9,
+    };
     setZoom(zoomMap[radius]);
 
     setSearchedAddress(place.formatted_address || "");
   };
 
   const handleRadiusChange = (event) => {
-    const zoomMap = { 5: 11, 10: 10, 15: 9, 20: 9, 25: 9, 30: 9 };
+    const zoomMap = {
+      1: 11,
+      2: 11,
+      3: 11,
+      4: 11,
+      5: 11,
+      10: 10,
+      15: 9,
+      20: 9,
+      25: 9,
+      30: 9,
+    };
     setZoom(zoomMap[event.target.value]);
     setRadius(event.target.value);
   };
@@ -147,6 +169,10 @@ function Home() {
                 onChange={handleRadiusChange}
                 className="find-select"
               >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={15}>15</option>
